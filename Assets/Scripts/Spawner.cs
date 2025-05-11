@@ -12,10 +12,37 @@ public class Spawner : MonoBehaviour
         SpawnNewTetromino();
     }
 
+    public static bool IsValidPosition(Transform tetromino)
+    {
+        foreach (Transform block in tetromino)
+        {
+            Vector2Int pos = Vector2Int.RoundToInt(block.position);
+
+            // Yüksekliği 20 olan grid'de son geçerli y = 19
+            if (pos.x < 0 || pos.x >= width || pos.y < 0 || pos.y >= height)
+                continue; // üst sınırda blok varsa geçici olarak izin ver
+
+            if (grid[pos.x, pos.y] != null)
+                return false;
+        }
+        return true;
+    }
+
+
     public void SpawnNewTetromino()
     {
         int index = Random.Range(0, tetrominoes.Length);
-        Instantiate(tetrominoes[index], transform.position, Quaternion.identity);
+        GameObject newTetromino = Instantiate(tetrominoes[index], transform.position, Quaternion.identity);
+
+        // Game Over kontrolü
+        if (!IsValidPosition(newTetromino.transform))
+        {
+            Debug.Log("GAME OVER!");
+            Destroy(newTetromino);
+            Time.timeScale = 0f;
+            FindObjectOfType<GameManager>().ShowGameOver();
+        }
+
     }
 
     public static Vector2 Round(Vector2 v)
@@ -99,4 +126,6 @@ public class Spawner : MonoBehaviour
             }
         }
     }
+
+
 }

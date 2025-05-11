@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static int score = 0;
     public Text scoreText;
+    public GameObject gameOverText;
 
     void Start()
     {
@@ -36,4 +37,10 @@ public class GameManager : MonoBehaviour
         if (scoreText != null)
             scoreText.text = "Skor: " + score.ToString();
     }
+
+    public void ShowGameOver()
+    {
+        gameOverText.SetActive(true);
+    }
+
 }
