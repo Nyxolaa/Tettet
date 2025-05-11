@@ -21,6 +21,7 @@ public class Tetromino : MonoBehaviour
             {
                 transform.position += Vector3.up;
                 Spawner.AddToGrid(transform);
+                Spawner.CheckForLines(); // ✅ Yeni satır silme fonksiyonu
                 FindObjectOfType<Spawner>().SpawnNewTetromino();
                 enabled = false;
             }
@@ -71,4 +72,6 @@ public class Tetromino : MonoBehaviour
         }
         return true;
     }
+
+
 }
