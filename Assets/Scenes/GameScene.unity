@@ -351,7 +351,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -744,12 +744,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534141983593550401, guid: 6ab1abf98f68940e1a30e7b83d4d03ed, type: 3}
       propertyPath: tetrominoes.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4534141983593550401, guid: 6ab1abf98f68940e1a30e7b83d4d03ed, type: 3}
       propertyPath: 'tetrominoes.Array.data[0]'
       value: 
       objectReference: {fileID: 2861807422391369207, guid: bb06b2d8c55ff43cf97bf361237f8808, type: 3}
+    - target: {fileID: 4534141983593550401, guid: 6ab1abf98f68940e1a30e7b83d4d03ed, type: 3}
+      propertyPath: 'tetrominoes.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1618855084301910176, guid: 6ba2023a5ced948bd817d654ed5a8e47, type: 3}
+    - target: {fileID: 4534141983593550401, guid: 6ab1abf98f68940e1a30e7b83d4d03ed, type: 3}
+      propertyPath: 'tetrominoes.Array.data[2]'
+      value: 
+      objectReference: {fileID: 386830390305078810, guid: bf19f62bc54d44f9fa0c77568a67f2f6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
