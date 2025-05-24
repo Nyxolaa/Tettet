@@ -31,21 +31,21 @@ public class Tetromino : MonoBehaviour
 
     void HandleInput()
     {
-        // → / D
+        // → or D
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             transform.position += Vector3.right;
             if (!IsValidMove()) transform.position += Vector3.left;
         }
 
-        // ← / A
+        // ← or A
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             transform.position += Vector3.left;
             if (!IsValidMove()) transform.position += Vector3.right;
         }
 
-        // ↓ / S
+        // ↓ or S
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             transform.position += Vector3.down;
@@ -53,12 +53,14 @@ public class Tetromino : MonoBehaviour
             {
                 transform.position += Vector3.up;
                 Spawner.AddToGrid(transform);
+
+                Spawner.CheckForLines();
                 FindObjectOfType<Spawner>().SpawnNewTetromino();
                 enabled = false;
             }
         }
 
-        // ↑ / W
+        // ↑ or W
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
             transform.Rotate(0, 0, -90);
