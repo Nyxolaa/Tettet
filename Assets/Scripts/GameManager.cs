@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,9 +8,50 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public GameObject gameOverText;
 
+    public GameObject startButton;
+    public GameObject stopButton;
+    public GameObject replayButton;
+
+    private bool isPaused = true;
+
     void Start()
     {
         UpdateScoreText();
+
+        Time.timeScale = 0f;
+        gameOverText.SetActive(false);
+        replayButton.SetActive(false);
+        stopButton.SetActive(false);
+    }
+
+public void StartGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1f;
+        startButton.SetActive(false);
+        stopButton.SetActive(true);
+    }
+
+    public void StopGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0f;
+        stopButton.SetActive(false);
+        startButton.SetActive(true);
+    }
+
+    public void ReplayGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ShowGameOver()
+    {
+        gameOverText.SetActive(true);
+        Time.timeScale = 0f;
+        replayButton.SetActive(true);
+        stopButton.SetActive(false);
     }
 
     public static void AddScore(int linesCleared)
@@ -38,9 +80,6 @@ public class GameManager : MonoBehaviour
             scoreText.text = "Skor: " + score.ToString();
     }
 
-    public void ShowGameOver()
-    {
-        gameOverText.SetActive(true);
-    }
+
 
 }
