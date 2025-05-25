@@ -4,6 +4,7 @@ public class Tetromino : MonoBehaviour
 {
     public float fallTime = 1f;
     private float previousTime;
+    private bool hasLanded = false;
 
     void Start()
     {
@@ -54,6 +55,8 @@ public class Tetromino : MonoBehaviour
  
     public void MoveDown()
     {
+        if (hasLanded) return; 
+
         transform.position += Vector3.down;
         if (!IsValidMove())
         {
@@ -61,6 +64,7 @@ public class Tetromino : MonoBehaviour
             Spawner.AddToGrid(transform);
             Spawner.CheckForLines();
             FindObjectOfType<Spawner>().SpawnNewTetromino();
+            hasLanded = true;
             enabled = false;
         }
     }

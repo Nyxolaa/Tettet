@@ -1,21 +1,19 @@
 using UnityEngine;
 
-public class SwipeInput : MonoBehaviour
+public class MobileInput : MonoBehaviour
 {
     private Vector2 startTouchPosition;
     private Vector2 endTouchPosition;
     private Tetromino tetromino;
 
-    private float swipeThreshold = 50f;
-
     void Start()
     {
-        tetromino = FindObjectOfType<Tetromino>();
+        tetromino = GetComponent<Tetromino>();
     }
 
     void Update()
     {
-        if (Input.touchCount > 0 && tetromino != null)
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -27,27 +25,29 @@ public class SwipeInput : MonoBehaviour
 
                 case TouchPhase.Ended:
                     endTouchPosition = touch.position;
-                    Vector2 delta = endTouchPosition - startTouchPosition;
-
-                    if (delta.magnitude > swipeThreshold)
-                    {
-                        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
-                        {
-                            if (delta.x > 0)
-                                tetromino.MoveRight();
-                            else
-                                tetromino.MoveLeft();
-                        }
-                        else
-                        {
-                            if (delta.y < 0)
-                                tetromino.MoveDown();
-                            else
-                                tetromino.Rotate();
-                        }
-                    }
+                    HandleSwipe();
                     break;
             }
+        }
+    }
+
+    void HandleSwipe()
+    {
+        Vector2 delta = endTouchPosition - startTouchPosition;
+
+        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+        {
+            if (delta.x > 30)
+                tetromino.MoveRight(); // sağa kaydır
+            else if (delta.x < -30)
+                tetromino.MoveLeft();  // sola kaydır
+        }
+        else
+        {
+            if (delta.y > 30)
+                tetromino.Rotate();    // yukarı kaydır = döndür
+            else if (delta.y < -30)
+                tetromino.MoveDown();       // aşağı kaydır = düşür
         }
     }
 }
