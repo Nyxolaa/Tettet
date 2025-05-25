@@ -7,10 +7,6 @@ public class Spawner : MonoBehaviour
     public static int height = 30;
     public static Transform[,] grid = new Transform[width, height];
 
-    void Start()
-    {
-        SpawnNewTetromino();
-    }
 
     public static bool IsValidPosition(Transform tetromino)
     {

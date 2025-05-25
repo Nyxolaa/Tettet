@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject spawner; 
+
     public static int score = 0;
     public Text scoreText;
     public GameObject gameOverText;
@@ -12,10 +14,24 @@ public class GameManager : MonoBehaviour
     public GameObject stopButton;
     public GameObject replayButton;
 
+    private bool hasGameStarted = false;
     private bool isPaused = true;
 
     void Start()
     {
+        if (gameOverText == null)
+        {
+            gameOverText = GameObject.Find("GameOverText");
+            if (gameOverText == null)
+            {
+                Debug.LogError("GameOverText objesi sahnede bulunamadı!");
+            }
+            else
+            {
+                Debug.Log("GameOverText otomatik olarak atandı.");
+            }
+        }
+
         UpdateScoreText();
 
         Time.timeScale = 0f;
@@ -24,12 +40,18 @@ public class GameManager : MonoBehaviour
         stopButton.SetActive(false);
     }
 
-public void StartGame()
+    public void StartGame()
     {
         isPaused = false;
         Time.timeScale = 1f;
         startButton.SetActive(false);
         stopButton.SetActive(true);
+
+        if (!hasGameStarted)
+        {
+            spawner.GetComponent<Spawner>().SpawnNewTetromino();
+            hasGameStarted = true;
+        }
     }
 
     public void StopGame()
@@ -48,6 +70,8 @@ public void StartGame()
 
     public void ShowGameOver()
     {
+        Debug.Log("Game Over gösteriliyor.");
+
         gameOverText.SetActive(true);
         Time.timeScale = 0f;
         replayButton.SetActive(true);
@@ -56,6 +80,8 @@ public void StartGame()
 
     public static void AddScore(int linesCleared)
     {
+        Debug.Log("AddScore çağrıldı: " + linesCleared);
+
         int points = 0;
         switch (linesCleared)
         {
@@ -68,18 +94,30 @@ public void StartGame()
         score += points;
 
         // GameManager sahnedeki objeyse, skor güncellemesini yapalım
-        if (FindObjectOfType<GameManager>() != null)
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null)
         {
-            FindObjectOfType<GameManager>().UpdateScoreText();
+            gm.UpdateScoreText();
+            Debug.Log("UpdateScoreText çağrıldı");
         }
+        else
+        {
+            Debug.Log("GameManager bulunamadı");
+        }
+
     }
 
     public void UpdateScoreText()
     {
-        if (scoreText != null)
+        if(scoreText != null)
+        {
             scoreText.text = "Skor: " + score.ToString();
+            Debug.Log("Skor güncellendi: " + score);
+        }
+        else
+        {
+            Debug.LogWarning("scoreText null!");
+        }
     }
-
-
 
 }

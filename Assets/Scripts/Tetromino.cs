@@ -12,60 +12,63 @@ public class Tetromino : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f)
+            return;
+
         HandleInput();
 
         if (Time.time - previousTime > fallTime)
         {
-            transform.position += Vector3.down;
-            if (!IsValidMove())
-            {
-                transform.position += Vector3.up;
-                Spawner.AddToGrid(transform);
-                Spawner.CheckForLines(); // Satır silme fonksiyonu
-                FindObjectOfType<Spawner>().SpawnNewTetromino();
-                enabled = false;
-            }
+            MoveDown();
             previousTime = Time.time;
         }
     }
 
     void HandleInput()
     {
-        // → or D
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        {
-            transform.position += Vector3.right;
-            if (!IsValidMove()) transform.position += Vector3.left;
-        }
+            MoveRight();
 
-        // ← or A
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-        {
-            transform.position += Vector3.left;
-            if (!IsValidMove()) transform.position += Vector3.right;
-        }
+            MoveLeft();
 
-        // ↓ or S
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            transform.position += Vector3.down;
-            if (!IsValidMove())
-            {
-                transform.position += Vector3.up;
-                Spawner.AddToGrid(transform);
+            MoveDown();
 
-                Spawner.CheckForLines();
-                FindObjectOfType<Spawner>().SpawnNewTetromino();
-                enabled = false;
-            }
-        }
-
-        // ↑ or W
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            Rotate();
+    }
+
+    // Mobil & Klavye metodlar
+    public void MoveLeft()
+    {
+        transform.position += Vector3.left;
+        if (!IsValidMove()) transform.position += Vector3.right;
+    }
+
+    public void MoveRight()
+    {
+        transform.position += Vector3.right;
+        if (!IsValidMove()) transform.position += Vector3.left;
+    }
+ 
+    public void MoveDown()
+    {
+        transform.position += Vector3.down;
+        if (!IsValidMove())
         {
-            transform.Rotate(0, 0, -90);
-            if (!IsValidMove()) transform.Rotate(0, 0, 90);
+            transform.position += Vector3.up;
+            Spawner.AddToGrid(transform);
+            Spawner.CheckForLines();
+            FindObjectOfType<Spawner>().SpawnNewTetromino();
+            enabled = false;
         }
+    }
+
+    public void Rotate()
+    {
+        transform.Rotate(0, 0, -90);
+        if (!IsValidMove()) transform.Rotate(0, 0, 90);
     }
 
     bool IsValidMove()
